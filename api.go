@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -128,6 +129,34 @@ func (m *MailboxAPI) HandleLabeledMessages(writer http.ResponseWriter, req *http
 	if len(dbQuery) == 0 {
 		log.Println("No labels given")
 		http.Error(writer, "No labels given", http.StatusBadRequest)
+		return
+	}
+
+	payload, err := m.mailbox.Search(dbQuery)
+	if err != nil {
+		log.Println("Failed to get messages", err)
+		http.Error(writer, "Failed to get messages", http.StatusInternalServerError)
+		return
+	}
+
+	content, err := json.Marshal(payload)
+	if err != nil {
+		log.Println("Failed to convert to JSON", err)
+		http.Error(writer, "Failed to convert to JSON", http.StatusInternalServerError)
+		return
+	}
+
+	handler(content, writer)
+}
+
+// SearchMessages retrieves any messages in the Mailbox including mentioned terms.
+func (m *MailboxAPI) SearchMessages(writer http.ResponseWriter, req *http.Request) {
+	terms := req.URL.Query()["search"]
+	dbQuery := strings.Join(terms, " and ")
+
+	if len(dbQuery) == 0 {
+		log.Println("No search terms given")
+		http.Error(writer, "No search given", http.StatusBadRequest)
 		return
 	}
 

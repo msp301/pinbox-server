@@ -28,6 +28,7 @@ func main() {
 	router.UseEncodedPath()
 
 	router.Path("/api/messages").Queries("label", "{label}").HandlerFunc(api.HandleLabeledMessages)
+	router.Path("/api/messages").Queries("search", "{term}").HandlerFunc(api.SearchMessages)
 
 	router.HandleFunc("/api/inbox", api.GetInbox)
 	router.HandleFunc("/api/labels", api.GetLabels)

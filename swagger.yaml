@@ -129,6 +129,11 @@ paths:
       tags:
         - "messages"
       summary: "Access email threads"
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
       responses:
         200:
           description: "Success"
