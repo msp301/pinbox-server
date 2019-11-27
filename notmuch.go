@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/jhillyerd/enmime"
 	notmuch "github.com/msp301/go.notmuch"
@@ -116,6 +117,7 @@ func (mailbox *Notmuch) ReadMessage(id string) (MessageContent, error) {
 		ID:      msg.ID(),
 		Epoch:   msg.Date().Unix(),
 		Author:  msg.Header("From"),
+		To:      strings.Split(msg.Header("To"), ","),
 		Content: encodedContent,
 	}
 
