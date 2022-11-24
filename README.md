@@ -1,3 +1,5 @@
+*ARCHIVING THIS REPOISTORY. THIS PROJECT HAS BEEN MERGED WITH THE FRONTEND. SEE: https://github.com/msp301/pinbox*
+
 # Pinbox webmail backend
 
 Pinbox is a self-hosted webmail client greatly inspired by Google Inbox.
